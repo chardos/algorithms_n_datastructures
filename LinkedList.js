@@ -17,7 +17,6 @@ class LinkedList {
     }
 
     pop() {
-        // remove .next on second last node
         const lastNode = this.get(this.length - 2);
         lastNode.next = null
         const poppedTail = this.tail;
@@ -49,8 +48,22 @@ class LinkedList {
             return undefined;
         }
     }
+
     delete(index) {
-        
+        const nodeBefore = this.get(index - 1);
+        const nodeAfter = this.get(index + 1);
+        const isHead = (index === this.length - 1);
+        const isTail = (index === this.length - 1);
+
+        if (isHead) {
+            this.head = nodeAfter;
+        } else if (isTail) {
+            nodeBefore.next = null;
+            this.tail = nodeBefore;
+        } else {
+            nodeBefore.next = nodeAfter;
+        }
+        this.length--;
     }
 }
 
@@ -66,11 +79,12 @@ const linkedList = new LinkedList();
 linkedList.push(new Node('one'))
 linkedList.push(new Node('two'))
 linkedList.push(new Node('three'))
+linkedList.push(new Node('four'))
+linkedList.push(new Node('five'))
 
 
+// console.log('pop',linkedList.pop())
+linkedList.delete(0);
 console.log(linkedList)
-console.log(linkedList.get(0))
-console.log(linkedList.get(1))
-console.log(linkedList.get(2))
-console.log('pop',linkedList.pop())
-console.log(linkedList)
+// console.log(linkedList.get(0).next)
+// console.log(linkedList.get(0).next.next)
