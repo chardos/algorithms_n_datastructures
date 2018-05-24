@@ -6,14 +6,16 @@ class LinkedList {
     }
 
     push(value) {
-        if (this.length === 0) { this.head = value }
-        this.tail = value;
-        this.length++;
-
-        if (this.length > 1) {
-            const lastNode = this.get(this.length - 2);
-            lastNode.next = this.tail;
+        const node = new Node(value);
+        if (!this.head) {
+            this.head = node;
         }
+        else {
+            const prevTail = this.get(this.length - 2);
+            prevTail.next = this.tail;
+        }
+        this.tail = node;
+        this.length++;
     }
 
     pop() {
@@ -76,11 +78,11 @@ class Node {
 
 
 const linkedList = new LinkedList();
-linkedList.push(new Node('one'))
-linkedList.push(new Node('two'))
-linkedList.push(new Node('three'))
-linkedList.push(new Node('four'))
-linkedList.push(new Node('five'))
+linkedList.push('one')
+linkedList.push('two')
+linkedList.push('three')
+linkedList.push('four')
+linkedList.push('five')
 
 
 // console.log('pop',linkedList.pop())
