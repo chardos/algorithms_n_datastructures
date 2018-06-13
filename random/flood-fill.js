@@ -1,44 +1,38 @@
-const screen =    [[1, 1, 1, 1, 1, 1, 1, 1],
-                  [1, 1, 1, 1, 1, 1, 0, 0],
-                  [1, 0, 0, 1, 1, 0, 1, 1],
-                  [1, 2, 2, 2, 2, 2, 1, 0],
-                  [1, 1, 1, 2, 2, 2, 1, 0],
-                  [1, 1, 1, 2, 2, 2, 2, 0],
-                  [1, 1, 1, 1, 1, 2, 1, 1],
-                  [1, 1, 1, 1, 1, 2, 2, 1],
+const screen =   [[0, 0, 0, 0, 0, 0, 0, 0],
+                  [1, 1, 0, 0, 1, 0, 1, 1],
+                  [0, 1, 0, 0, 1, 1, 1, 0],
+                  [0, 1, 1, 1, 0, 1, 0, 0],
+                  [0, 0, 0, 1, 1, 1, 0, 0],
+                  [0, 0, 0, 0, 1, 0, 0, 0],
+                  [0, 0, 1, 1, 1, 0, 0, 0],
+                  [0, 0, 0, 0, 1, 0, 0, 0],
                   ];
 
-const leftHash = {}
+const fillSurrounding = (screen, x, y, newColor) => {
+    const oldColor = screen[x][y]
+    // Color current square
+    screen[x][y] = newColor;
 
-const floodFill = (screen, x, y, color) => {
-    // find top
-    // clear each row
-}
-
-const findAboveRow = (screen, x, y) => {
-    const color = screen[x][y]
-    const leftIndex = getLeftIndex(screen[x], x, y)
-
-    const innerFind = (screen, x, y, color) => {
-        if (screen[x - 1][y] === color) { return y }
-        if (screen[x][y + 1] === color) { return null }
-        return innerFind(screen, x, y + 1, color)
+    const adjacentSquares = {
+        up: {x: x - 1, y},
+        down: {x: x + 1, y},
+        left: {x, y: y - 1},
+        right: {x, y: y + 1}
     }
+
+    Object.keys(adjacentSquares).forEach(key => {
+        const coords = adjacentSquares[key];
+        if (screen[coords.x] !== undefined && screen[coords.x][coords.y] === oldColor){
+            fillSurrounding(screen, coords.x, coords.y, newColor)
+        }
+    })
 }
 
-const getLeftIndex = (row, x, y, color=row[y]) => {
-    if (row[y - 1] !== color) {
-        leftHash[x] = y;
-        return y
-    }
-    return getLeftIndex (row, x, y - 1, color)
-}
-// const a = getLeftIndex(screen[3], 3, 5)
-// console.log(a);
+console.log(screen);
+fillSurrounding(screen, 4, 4, 3)
+console.log(screen);
 
-const fillRow = (row, leftIndex) => {
 
-}
 
 // option 1
 // find top
