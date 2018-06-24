@@ -17,7 +17,9 @@ class Graph {
     }
 
     containsVertices (...nodes) {
-        return Object.keys(this.vertices).every(node => Boolean(this.vertices[node]))
+        return nodes.every(node => {
+            return Boolean(this.vertices[node])
+        })
     }
 
     removeVertex (node) {
@@ -47,28 +49,15 @@ class Graph {
             delete this.vertices[endNode].edges[startNode]
         }
     }
-}
 
-
-
-
-
-
-// =============================================================================
-// Edges
-// =============================================================================
-function Old(){}
-Old.prototype.addEdge = function(startNode, endNode) {
-    if (this.contains(startNode, endNode)) {
-        this.graph[startNode].edges[endNode] = true
-        this.graph[endNode].edges[startNode] = true
+    containsEdge (startNode, endNode) {
+        if (this.containsVertices(startNode, endNode)) {
+            return Boolean(this.vertices[startNode].edges[endNode])
+        }
+        return false;
     }
 }
 
-
-
-Old.prototype.containsEdge = function(startNode, endNode) {
-}
 
 // getVertex
 // getVertexSet
@@ -82,6 +71,10 @@ graph.addVertex('carol')
 graph.addEdge('alice', 'bob')
 console.log('ALICE',graph.getVertex('alice'))
 console.log('BOB',graph.getVertex('bob'))
+console.log('contains',graph.containsVertices('alice', 'bob'))
+console.log('edge?',graph.containsEdge('alice', 'bob'))
 graph.removeVertex('alice')
 console.log('ALICE',graph.getVertex('alice'))
 console.log('BOB',graph.getVertex('bob'))
+console.log('contains',graph.containsVertices('alice', 'bob'))
+// console.log('edge?',graph.containsEdge('alice', 'bob'))
