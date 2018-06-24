@@ -1,51 +1,73 @@
-function Graph() {
-    this.graph = {}
+class Graph {
+    constructor() {
+        this.vertices = {}
+        this.edges = {}
+    }
 
-    return graph;
+    // =============================================================================
+    // Vertices
+    // =============================================================================
+
+    addVertex (node) {
+        this.vertices[node] = {edges: {}}
+    }
+
+    getVertex (node) {
+        return this.vertices[node] || null
+    }
+
+    containsVertices (...nodes) {
+        return Object.keys(this.vertices).every(node => Boolean(this.vertices[node]))
+    }
+
+    removeVertex (node) {
+        if (this.containsVertices(node)) {
+            const edges = this.vertices[node].edges
+            Object.keys(edges).forEach((connectedNode) => {
+                this.removeEdge(node, connectedNode)
+            })
+            delete this.vertices[node]
+        }
+    }
+
+    // =============================================================================
+    // Edges
+    // =============================================================================
+
+    addEdge (startNode, endNode) {
+        if (this.containsVertices(startNode, endNode)) {
+            this.vertices[startNode].edges[endNode] = true
+            this.vertices[endNode].edges[startNode] = true
+        }
+    }
+
+    removeEdge (startNode, endNode) {
+        if (this.containsVertices(startNode, endNode)) {
+            delete this.vertices[startNode].edges[endNode]
+            delete this.vertices[endNode].edges[startNode]
+        }
+    }
 }
 
-// =============================================================================
-// Vertexes
-// =============================================================================
 
-Graph.prototype.getVertex = function(node) {
-    return this.graph[node] || null
-}
 
-Graph.prototype.addVertex = function(node) {
-    this.graph[node] = {edges: {}}
-}
 
-Graph.prototype.removeVertex = function(node) {
-    // if (this.graph.contains(node)) {
-    //     delete this.graph[node]
-    // }
-}
 
-Graph.prototype.containsVertex = function(...nodes) {
-    return nodes.every(node => Boolean(this.graph[node]))
-}
 
 // =============================================================================
 // Edges
 // =============================================================================
-
-Graph.prototype.addEdge = function(startNode, endNode) {
-    console.log(this.prototype)
+function Old(){}
+Old.prototype.addEdge = function(startNode, endNode) {
     if (this.contains(startNode, endNode)) {
         this.graph[startNode].edges[endNode] = true
         this.graph[endNode].edges[startNode] = true
     }
 }
 
-Graph.prototype.removeEdge = function(startNode, endNode) {
-    if (this.graph.contains(startNode, endNode)) {
-        delete this.graph[startNode].edges[endNode]
-        delete this.graph[endNode].edges[startNode]
-    }
-}
 
-Graph.prototype.containsEdge = function(startNode, endNode) {
+
+Old.prototype.containsEdge = function(startNode, endNode) {
 }
 
 // getVertex
@@ -56,5 +78,10 @@ Graph.prototype.containsEdge = function(startNode, endNode) {
 const graph = new Graph()
 graph.addVertex('alice')
 graph.addVertex('bob')
+graph.addVertex('carol')
 graph.addEdge('alice', 'bob')
-console.log(graph.getVertex('alice'))
+console.log('ALICE',graph.getVertex('alice'))
+console.log('BOB',graph.getVertex('bob'))
+graph.removeVertex('alice')
+console.log('ALICE',graph.getVertex('alice'))
+console.log('BOB',graph.getVertex('bob'))
